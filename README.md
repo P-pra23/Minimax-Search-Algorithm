@@ -1,6 +1,6 @@
 <h1>ExpNo 5 : Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game</h1> 
-<h3>Name:           </h3>
-<h3>Register Number/Staff Id:          </h3>
+<h3>Name: Prathikshaa          </h3>
+<h3>Register Number: 212224100043          </h3>
 <H3>Aim:</H3>
 <p>
     Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game
@@ -110,6 +110,175 @@ end
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/dc06427a-d4ce-43a1-95bd-9acfaefac323)
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/a8a27e2a-6fd4-46a2-afb5-6d27b8556702)
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/a2acb6a1-ed8e-42e5-8968-fe805e4b0255)
+
+## Program :
+```
+
+# Experiment 5: Minimax Search Algorithm for Tic-Tac-Toe
+
+import math
+
+# Create an empty 3x3 board
+board = [" " for i in range(9)]
+
+HUMAN = "X"
+COMPUTER = "O"
+
+
+# Display the Tic-Tac-Toe board
+def display_board():
+    print()
+    for i in range(0, 9, 3):
+        print(" " + " | ".join(board[i:i+3]))
+        if i < 6:
+            print("---+---+---")
+    print()
+
+
+# Check whether a player has won
+def check_winner(player):
+    winning_positions = [
+        (0, 1, 2), (3, 4, 5), (6, 7, 8),
+        (0, 3, 6), (1, 4, 7), (2, 5, 8),
+        (0, 4, 8), (2, 4, 6)
+    ]
+
+    for a, b, c in winning_positions:
+        if board[a] == board[b] == board[c] == player:
+            return True
+
+    return False
+
+
+# Check whether the board is full
+def is_draw():
+    return " " not in board
+
+
+# Minimax algorithm
+def minimax(is_maximizing):
+
+    if check_winner(COMPUTER):
+        return 10
+
+    if check_winner(HUMAN):
+        return -10
+
+    if is_draw():
+        return 0
+
+    if is_maximizing:
+        best_score = -math.inf
+
+        for i in range(9):
+            if board[i] == " ":
+                board[i] = COMPUTER
+                score = minimax(False)
+                board[i] = " "
+                best_score = max(score, best_score)
+
+        return best_score
+
+    else:
+        best_score = math.inf
+
+        for i in range(9):
+            if board[i] == " ":
+                board[i] = HUMAN
+                score = minimax(True)
+                board[i] = " "
+                best_score = min(score, best_score)
+
+        return best_score
+
+
+# Find the best move for the computer
+def best_move():
+
+    best_score = -math.inf
+    move = None
+
+    for i in range(9):
+        if board[i] == " ":
+            board[i] = COMPUTER
+            score = minimax(False)
+            board[i] = " "
+
+            if score > best_score:
+                best_score = score
+                move = i
+
+    return move
+
+
+# Main game
+def play_game():
+
+    print("TIC-TAC-TOE USING MINIMAX ALGORITHM")
+    print("You are X")
+    print("Computer is O")
+    print("Enter row and column values from 0 to 2")
+
+    display_board()
+
+    while True:
+
+        # Human turn
+        try:
+            row = int(input("Enter row (0-2): "))
+            col = int(input("Enter column (0-2): "))
+
+            if row not in range(3) or col not in range(3):
+                print("Invalid position! Try again.")
+                continue
+
+            position = row * 3 + col
+
+            if board[position] != " ":
+                print("Position already occupied! Try again.")
+                continue
+
+        except ValueError:
+            print("Please enter valid numbers.")
+            continue
+
+        board[position] = HUMAN
+        display_board()
+
+        if check_winner(HUMAN):
+            print("Congratulations! You win!")
+            break
+
+        if is_draw():
+            print("It's a tie!")
+            break
+
+        # Computer turn using Minimax
+        print("Computer is thinking...")
+
+        position = best_move()
+        board[position] = COMPUTER
+
+        print("Computer selected row:", position // 3,
+              "column:", position % 3)
+
+        display_board()
+
+        if check_winner(COMPUTER):
+            print("Computer wins!")
+            break
+
+        if is_draw():
+            print("It's a tie!")
+            break
+
+
+# Start the game
+play_game()
+```
+
+## Output:
+<img width="1067" height="680" alt="image" src="https://github.com/user-attachments/assets/2ff5526b-7849-404e-a92d-438f10965b91" />
 
 <hr>
 <h2>Result:</h2>
